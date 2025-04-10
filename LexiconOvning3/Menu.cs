@@ -2,6 +2,8 @@
 using LexiconOvning3.Errors;
 using LexiconOvning3.Helpers;
 using LexiconOvning3.Models;
+using LexiconOvning3.Models.Enums;
+using LexiconOvning3.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,21 @@ namespace LexiconOvning3;
 
 public class Menu
 {
+    /**
+        F: Vad händer om du försöker lägga till en Car i en lista av Motorcycle?
+        S: Jag kommer få ett kompilering fel då Car inte går att konvertera till en motorcycle.
 
+        F: Vilken typ bör en lista vara för att rymma alla fordonstyper?
+        S: Så som jag har gjort i min kod ärver alla subklasser av den abstrakta klassen Vehicle.
+
+        F: Kommer du åt metoden Clean() från en lista med typen List<Vehicle>?
+        S: Nej inte direkt, MEN med att casta om de subklasser av Vehicle som ärver av interfacet ICleanable
+           så kommer det att fungera. 
+
+        F: Vad är fördelarna med att använda ett interface här istället för arv?
+        S: Större flexbilitet, eftersom vi bara kan arva från en klass, gör interface det mycket mer flexibelt. Interface innehåller bara "kontraktet" medans en abstrakt klass kan innehålla så mycket mer, props, metoder med logik osv. De klasser som inte ska/behöver ska inte tvingas använda Clean(). Vi behöver inte bry oss vilka arv som finns där.
+
+     * */
     public void Run()
     {
         VehicleHandler _vehicleHandler = new VehicleHandler();
@@ -61,7 +77,7 @@ public class Menu
 
         void UpdateVehicle()
         {
-            Console.WriteLine("*** Update a Vehicle ***\nSearch by Brand and Model.");
+            ConsoleHelper.MessageOutput("*** Update a Vehicle ***\nSearch by Brand and Model.");
 
             Console.Write("Search Brand: ");
             string searchBrand = Console.ReadLine();
@@ -69,7 +85,7 @@ public class Menu
             Console.Write("Search Model: ");
             string searchModel = Console.ReadLine();
 
-            Console.WriteLine("\nNow enter new values (or leave blank to keep current):");
+            ConsoleHelper.MessageOutput("\nNow enter new values (or leave blank to keep current):");
             var updatedData = PromptVehicleInput(isUpdate: true);
 
             bool isSuccess = _vehicleHandler.UpdateVehicle(
@@ -81,7 +97,7 @@ public class Menu
                 updatedData.Weight
             );
 
-            Console.WriteLine(isSuccess ? "Vehicle is now updated." : "Vehicle does not exists.");
+            ConsoleHelper.MessageOutput(isSuccess ? "Vehicle is now updated." : "Vehicle does not exists.");
         }
 
 
@@ -158,6 +174,7 @@ public class Menu
                 weight
              );
         }
+
         void ListAndCallMethods()
         {
             List<Vehicle> vList = _vehicleHandler.DisplayVehicles();
@@ -165,14 +182,12 @@ public class Menu
             {
                 Console.WriteLine(v.Stats());
                 v.StartEngine();
-
+                if (v is ICleanable cleanable)
+                    cleanable.Clean();
             }
         }
 
     }
-
-
-
 
     private TruckData CreateTruckData()
     {

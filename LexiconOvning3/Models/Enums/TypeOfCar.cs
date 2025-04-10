@@ -1,4 +1,4 @@
-﻿namespace LexiconOvning3.Models;
+﻿namespace LexiconOvning3.Models.Enums;
 
 public enum TypeOfCar
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LexiconOvning3.Models;
+namespace LexiconOvning3.Models.Enums;
 
 public enum TypeOfCargo
 {
